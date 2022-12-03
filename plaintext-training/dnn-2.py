@@ -1,5 +1,4 @@
-# 下面考虑3层全连接神经网络（Fully Connected Nerual Network，FCNN），数据集为MNIST，使用SGD算法和mini-batch
-# 下面的算法主要参考自https://github.com/OpenMined/PySyft/blob/PySyft/syft_0.2.x/examples/tutorials/Part%2011%20-%20Secure%20Deep%20Learning%20Classification.ipynb
+# 下面考虑3层全连接神经网络（Fully Connected Nerual Network，FCNN），数据集为MNIST
 
 import torch
 import torch.nn as nn
@@ -39,10 +38,19 @@ test_loader = torch.utils.data.DataLoader(
                    ])),
     batch_size=args.test_batch_size, shuffle=True)
 
+# 定义ReLU函数
+# def relu(x):
+#     row_num, col_num = x.shape[0], x.shape[1]
+#     for i in range(row_num):
+#         for j in range(col_num):
+#             if x[i,j] < 0:
+#                 x[i,j] = 0
+#     return x
+
 
 # 定义神经网络：使用3层全连接神经网络(输入层，隐含层和输出层)
 class FCNN(nn.Module):
-    def __init__(self):     # d0是输入层神经元个数（即输入数据维度），d1是隐含层神经元个数，d2是输出层神经元个数（即输出数据维度）
+    def __init__(self):
         super(FCNN, self).__init__()
         self.fclayer1 = nn.Linear(28*28, 500)
         self.fclayer2 = nn.Linear(500, 10)
@@ -61,10 +69,10 @@ def train(args, model, train_loader, optimizer, epoch):
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
         optimizer.zero_grad()
-        output = model(data)
+        output = model(data)                    # 前向传播
         output = F.log_softmax(output, dim=1)
         loss = F.nll_loss(output, target)
-        loss.backward()
+        loss.backward()                         # 反向传播
         optimizer.step()
         if batch_idx % args.log_interval == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
@@ -95,9 +103,9 @@ def test(args, model, test_loader):
 
     test_loss /= len(test_loader.dataset)
 
-    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+    print('Test set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
         test_loss, correct, len(test_loader.dataset),
         100. * correct / len(test_loader.dataset)))
 
-print("---------- Testing ----------")
+print("\n---------- Testing ----------")
 test(args, model, test_loader)

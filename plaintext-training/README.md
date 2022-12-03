@@ -3,6 +3,7 @@
 #### dnn-1.py
 
 + 模型结构：单隐层前馈全连接神经网络
++ 数据集：MNIST数据集
 
 ```
 root@yp:~/yp_workplace/fssnn/plaintext-training# python dnn-1.py
