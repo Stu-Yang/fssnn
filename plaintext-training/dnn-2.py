@@ -16,7 +16,7 @@ class Arguments():
         self.batch_size = 64
         self.test_batch_size = 50
         self.epochs = epochs
-        self.lr = 0.001              # 学习率
+        self.lr = 0.1              # 学习率
         self.log_interval = 100
 
 args = Arguments()
@@ -53,16 +53,33 @@ class FCNN(nn.Module):
     def __init__(self):
         super(FCNN, self).__init__()
         self.fclayer1 = nn.Linear(28*28, 500)
+        self.relu = nn.ReLU()
         self.fclayer2 = nn.Linear(500, 10)
     
     def forward(self, x):                # 前向传播
         x = x.view(-1, 28*28)
         x = self.fclayer1(x)
-        x = F.relu(x)
+        x = self.relu(x)
         x = self.fclayer2(x)
-        #x = F.relu(x)
+        #x = self.relu(x)
         return x
 
+# 定义one-hot编码函数
+def one_hot_of(index_tensor):
+        """
+        Transform to one hot tensor
+        
+        Example:
+            [0, 3, 9]
+            =>
+            [[1., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+             [0., 0., 0., 1., 0., 0., 0., 0., 0., 0.],
+             [0., 0., 0., 0., 0., 0., 0., 0., 0., 1.]]
+            
+        """
+        onehot_tensor = torch.zeros(*index_tensor.shape, 10) # 10 classes for MNIST
+        onehot_tensor = onehot_tensor.scatter(1, index_tensor.view(-1, 1), 1)
+        return onehot_tensor
 
 # 定义训练过程
 def train(args, model, train_loader, optimizer, epoch):
@@ -71,7 +88,7 @@ def train(args, model, train_loader, optimizer, epoch):
         optimizer.zero_grad()
         output = model(data)                    # 前向传播
         output = F.log_softmax(output, dim=1)   # 对输出进行归一化（按列进行）
-        loss = F.nll_loss(output, target)       # 计算误差
+        loss = F.mse_loss(output, one_hot_of(target))       # 计算误差，其中output是batch size * class size的矩阵，target是batch size的向量
         loss.backward()                         # 反向传播
         optimizer.step()                        # 更新参数
         if batch_idx % args.log_interval == 0:
@@ -82,7 +99,7 @@ def train(args, model, train_loader, optimizer, epoch):
 # 模型训练过程
 print("---------- Training ----------")
 model = FCNN()
-optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+optimizer = torch.optim.SGD(model.parameters(), lr=args.lr)
 
 for epoch in range(1, args.epochs + 1):
     train(args, model, train_loader, optimizer, epoch)
@@ -97,7 +114,7 @@ def test(args, model, test_loader):
         for data, target in test_loader:
             output = model(data)
             output = F.log_softmax(output, dim=1)
-            test_loss += F.nll_loss(output, target, reduction='sum').item() # sum up batch loss
+            test_loss += F.mse_loss(output, one_hot_of(target), reduction='sum').item() # sum up batch loss
             pred = output.argmax(1, keepdim=True) # get the index of the max log-probability 
             correct += pred.eq(target.view_as(pred)).sum().item()
 
