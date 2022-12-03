@@ -70,10 +70,10 @@ def train(args, model, train_loader, optimizer, epoch):
     for batch_idx, (data, target) in enumerate(train_loader):
         optimizer.zero_grad()
         output = model(data)                    # 前向传播
-        output = F.log_softmax(output, dim=1)
-        loss = F.nll_loss(output, target)
+        output = F.log_softmax(output, dim=1)   # 对输出进行归一化（按列进行）
+        loss = F.nll_loss(output, target)       # 计算误差
         loss.backward()                         # 反向传播
-        optimizer.step()
+        optimizer.step()                        # 更新参数
         if batch_idx % args.log_interval == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * args.batch_size, len(train_loader) * args.batch_size,
