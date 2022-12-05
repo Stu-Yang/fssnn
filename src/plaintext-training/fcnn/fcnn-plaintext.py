@@ -1,7 +1,6 @@
 import time
 import torch
 import torch.nn as nn
-import torch.optim as optim
 from torchvision import datasets, transforms
 
 # 定义参数，参考https://github.com/LaRiffle/ariann/blob/main/main.py中的默认参数
@@ -31,12 +30,9 @@ class FCNN(nn.Module):
     
     def forward(self, x):                # 前向传播
         x = x.reshape(-1, 784)
-        x = self.fc1(x)
-        x = relu(x)
-        x = self.fc2(x)
-        x = relu(x)
-        x = self.fc3(x)
-        x = relu(x)
+        x = relu(self.fc1(x))
+        x = relu(self.fc2(x))
+        x = relu(self.fc3(x))
         return x
 
 # 训练数据和测试数据加载，参考https://github.com/LaRiffle/ariann/blob/main/data.py
@@ -112,7 +108,7 @@ for epoch in range(1, args.epochs + 1):
     train(args, model, train_loader, optimizer, epoch)
 
 training_time = time.time() - start_time
-print("\n---------- Training Time: {:.3f}s ----------".format(training_time))
+print("\nOnline Training Time: {:.3f}s ".format(training_time))
 
 # 模型测试过程，参考https://github.com/LaRiffle/ariann/blob/main/procedure.py
 def test(args, model, test_loader):
@@ -128,9 +124,8 @@ def test(args, model, test_loader):
 
     test_loss /= len(test_loader.dataset)
 
-    print('Test set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+    print('Test set: Average loss: {:.4f}, Accuracy: {}/{} ({:.1f}%)\n'.format(
         test_loss, correct, len(test_loader.dataset),
         100. * correct / len(test_loader.dataset)))
 
-print("\n---------- Testing ----------")
 test(args, model, test_loader)
