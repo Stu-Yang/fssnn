@@ -29,7 +29,7 @@ train_loader = torch.utils.data.DataLoader(
                        transforms.ToTensor(),
                        transforms.Normalize((0.1307,), (0.3081,))
                    ])),
-    batch_size=args.batch_size, shuffle=True)
+    batch_size=args.batch_size, drop_last=True, shuffle=True)
 
 test_loader = torch.utils.data.DataLoader(
     datasets.MNIST('../data', train=False,
@@ -37,7 +37,7 @@ test_loader = torch.utils.data.DataLoader(
                        transforms.ToTensor(),
                        transforms.Normalize((0.1307,), (0.3081,))
                    ])),
-    batch_size=args.test_batch_size, shuffle=True)
+    batch_size=args.test_batch_size, drop_last=True, shuffle=True)
 
 
 # 定义神经网络：使用3层全连接神经网络(输入层，隐含层和输出层)
@@ -45,14 +45,16 @@ class FCNN(nn.Module):
     def __init__(self):
         super(FCNN, self).__init__()
         self.fclayer1 = nn.Linear(28*28, 500)
-        self.fclayer2 = nn.Linear(500, 10)
+        self.fclayer2 = nn.Linear(500, 500)
+        self.fclayer3 = nn.Linear(500, 10)
     
     def forward(self, x):                # 前向传播
         x = x.view(-1, 28*28)
         x = self.fclayer1(x)
         x = F.relu(x)
         x = self.fclayer2(x)
-        #x = F.relu(x)
+        x = F.relu(x)
+        x = self.fclayer3(x)
         return x
 
 
