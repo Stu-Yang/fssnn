@@ -24,11 +24,11 @@ def relu(x):
 class FCNN(nn.Module):
     def __init__(self):
         super(FCNN, self).__init__()
-        self.fc1 = nn.Linear(784, 128)     # 784 == 28*28
-        self.fc2 = nn.Linear(128, 128)
-        self.fc3 = nn.Linear(128, 10)      # MNIST数据集的分类0～9，共10个类别
+        self.fc1 = nn.Linear(784, 128)  # 784 == 28*28
+        self.fc2 = nn.Linear(128, 64)
+        self.fc3 = nn.Linear(64, 10)    # MNIST数据集的分类0～9，共10个类别
     
-    def forward(self, x):                # 前向传播
+    def forward(self, x):               # 前向传播
         x = x.reshape(-1, 784)
         x = relu(self.fc1(x))
         x = relu(self.fc2(x))
@@ -98,19 +98,7 @@ def train(args, model, train_loader, optimizer, epoch):
                 epoch, batch_idx * args.batch_size, len(train_loader) * args.batch_size,
                 100.0 * batch_idx / len(train_loader), loss.item(), total_time))
 
-# 模型训练过程
-print("---------- Training ----------")
-model = FCNN()
-optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
-
-start_time = time.time()
-for epoch in range(1, args.epochs + 1):
-    train(args, model, train_loader, optimizer, epoch)
-
-training_time = time.time() - start_time
-print("\nOnline Training Time: {:.3f}s ".format(training_time))
-
-# 模型测试过程，参考https://github.com/LaRiffle/ariann/blob/main/procedure.py
+# 定义模型测试过程，参考https://github.com/LaRiffle/ariann/blob/main/procedure.py
 def test(args, model, test_loader):
     model.eval()        # 设置为test模式  
     test_loss = 0
@@ -128,4 +116,22 @@ def test(args, model, test_loader):
         test_loss, correct, len(test_loader.dataset),
         100. * correct / len(test_loader.dataset)))
 
-test(args, model, test_loader)
+
+# 模型训练，并进行验证
+if __name__ == "__main__":
+
+    # 模型训练
+    print("---------- Training ----------")
+    model = FCNN()
+    optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
+
+    start_time = time.time()
+    for epoch in range(1, args.epochs + 1):
+        train(args, model, train_loader, optimizer, epoch)
+
+    training_time = time.time() - start_time
+    print("\nOnline Training Time: {:.3f}s ".format(training_time))
+
+
+    # 模型验证
+    test(args, model, test_loader)
