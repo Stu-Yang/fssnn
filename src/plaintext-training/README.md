@@ -404,3 +404,5 @@ Online Training Time: 197.113s
 Test set: Average loss: 0.0396, Accuracy: 9787/10000 (97.9%)
 
 </deltails>
+
+
