@@ -9,8 +9,8 @@ from data import get_private_data_loaders
 from procedure import train, test
 
 # 定义一些常数
-n_train_items = 1280
-n_test_items = 1280
+n_train_items = 59904
+n_test_items = 9984
 
 # 定义参与方Alice（P0）和Bob（P1），以及可信第三方crypto_provider
 hook = sy.TorchHook(torch) 
@@ -31,7 +31,7 @@ class Arguments():
         self.n_train_items = n_train_items      # 调整训练数据条目数量
         self.n_test_items = n_test_items        # 调整测试数据条目数量
 
-        self.epochs = 10            # 训练epoch大小
+        self.epochs = 15            # 训练epoch大小
         self.lr = 0.01              # 学习率
         self.seed = 1
         self.momentum = 0.9
@@ -88,15 +88,21 @@ if __name__ == "__main__":
     model = FCNN()
     model.encrypt(**kwargs)
 
-
     optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
     # optimizer = torch.optim.SGD(model.parameters(), lr=args.lr)
     optimizer = optimizer.fix_precision(
                     precision_fractional=args.precision_fractional, dtype=args.dtype
                 )
-
+    
+    start_time = time.time()
     for epoch in range(1, args.epochs + 1):
         train(args, model, private_train_loader, optimizer, epoch)
-    
+    training_time = time.time() - start_time
+
+
+    print("================================================")
+    print("Online Training Time: {:.3f}s ".format(training_time))
+    print("================================================")
+
     # 模型测试
     test(args, model, private_test_loader)

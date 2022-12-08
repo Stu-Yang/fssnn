@@ -57,7 +57,7 @@ def train(args, model, private_train_loader, optimizer, epoch):   # 训练函数
         tot_time = time.time() - start_time
         times.append(tot_time)
 
-        if batch_idx % args.log_interval == 0:
+        if batch_idx % (args.log_interval * 10) == 0:
             print(
                 "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}\tTime: {:.3f}s ({:.3f}s/item) [{:.3f}]".format(
                     epoch,
