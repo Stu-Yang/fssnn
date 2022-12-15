@@ -33,7 +33,8 @@ def get_private_data_loaders(args, kwargs):
     
     train_loader = torch.utils.data.DataLoader(
         datasets.MNIST('../data', train=True, download=True, transform=transformation),
-        batch_size=args.batch_size
+        batch_size=args.batch_size,
+        num_workers = 4
     )
     
     private_train_loader = []
@@ -44,7 +45,8 @@ def get_private_data_loaders(args, kwargs):
 
     test_loader = torch.utils.data.DataLoader(
         datasets.MNIST('../data', train=False, download=True, transform=transformation),
-        batch_size=args.test_batch_size
+        batch_size=args.test_batch_size,
+        num_workers = 4
     )
     
     private_test_loader = []
