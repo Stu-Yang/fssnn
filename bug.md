@@ -385,7 +385,7 @@ RuntimeError: matrices expected, got 1D, 2D tensors at /pytorch/aten/src/TH/gene
 ```
 </details>
 
+#### 2.2 我们的目标
 
-
-
-
+我们希望减少一个epoch的训练时间，以便和参照论文[AriaNN: Low-Interaction Privacy-Preserving Deep Learning via Function Secret Sharing](https://petsymposium.org/popets/2022/popets-2022-0015.php)的数据是一个数量级，这是我们最终的目标。
+  
