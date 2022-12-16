@@ -210,6 +210,7 @@ zipp                 3.11.0
 
 <details>
 <summary>下面是报错详细信息，请点击展开:mag:</summary>
+  
 ```
 (pysyft) root@yangpeng:~/yp_workplace/fssnn# python fcnn-ariann-3_threading.py
 ================================================
@@ -380,6 +381,7 @@ Traceback (most recent call last):
   File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 516, in _get_response
     response = command_method(*args_, **kwargs_)
 RuntimeError: matrices expected, got 1D, 2D tensors at /pytorch/aten/src/TH/generic/THTensorMath.cpp:131
+  
 ```
 </details>
 
