@@ -47,7 +47,7 @@ batch_size:      128
 
 #### 1.2 源码部署
 
-首先打包下载[code-download]()，然后解压到fssnn文件夹，并执行以下命令:
+首先打包下载[code-download](https://resource-1305526482.cos.ap-guangzhou.myqcloud.com/Code/fssnn.zip)，然后解压到fssnn文件夹，并执行以下命令:
 
 ```
 >>> conda create -n pysyft python=3.7       # 创建python虚拟环境
