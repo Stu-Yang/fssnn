@@ -760,3 +760,246 @@ Train Epoch: 9 [51200/59904 (85%)]	Loss: 0.048000	Time: 40.878s (0.319s/item)	Co
 Train Epoch: 9 [52480/59904 (88%)]	Loss: 0.014470	Time: 41.445s (0.324s/item)	Comm.:96.555MB [128.000]
 Train Epoch: 9 [53760/59904 (90%)]	Loss: 0.038350	Time: 43.590s (0.341s/item)	Comm.:96.555MB [128.000]
 Train Epoch: 9 [55040/59904 (92%)]	Loss: 0.086120	Time: 40.998s (0.320s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 9 [56320/59904 (94%)]	Loss: 0.025570	Time: 41.349s (0.323s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 9 [57600/59904 (96%)]	Loss: 0.038960	Time: 41.006s (0.320s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 9 [58880/59904 (98%)]	Loss: 0.007440	Time: 41.219s (0.322s/item)	Comm.:96.555MB [128.000]
+
+Accuracy: 32/32 (100%) 	Time / item: 0.4185s
+Accuracy: 285/288 (99%) 	Time / item: 0.4197s
+Accuracy: 533/544 (98%) 	Time / item: 0.4226s
+Accuracy: 781/800 (98%) 	Time / item: 0.4204s
+Accuracy: 1029/1056 (97%) 	Time / item: 0.4257s
+Accuracy: 1274/1312 (97%) 	Time / item: 0.4245s
+Accuracy: 1521/1568 (97%) 	Time / item: 0.4233s
+Accuracy: 1771/1824 (97%) 	Time / item: 0.4238s
+Accuracy: 2017/2080 (97%) 	Time / item: 0.4240s
+Accuracy: 2263/2336 (97%) 	Time / item: 0.4239s
+Accuracy: 2512/2592 (97%) 	Time / item: 0.4237s
+Accuracy: 2763/2848 (97%) 	Time / item: 0.4231s
+Accuracy: 3011/3104 (97%) 	Time / item: 0.4226s
+Accuracy: 3265/3360 (97%) 	Time / item: 0.4227s
+Accuracy: 3511/3616 (97%) 	Time / item: 0.4222s
+Accuracy: 3762/3872 (97%) 	Time / item: 0.4226s
+Accuracy: 4011/4128 (97%) 	Time / item: 0.4228s
+Accuracy: 4258/4384 (97%) 	Time / item: 0.4228s
+Accuracy: 4509/4640 (97%) 	Time / item: 0.4224s
+Accuracy: 4754/4896 (97%) 	Time / item: 0.4224s
+Accuracy: 5006/5152 (97%) 	Time / item: 0.4222s
+Accuracy: 5261/5408 (97%) 	Time / item: 0.4220s
+Accuracy: 5512/5664 (97%) 	Time / item: 0.4218s
+Accuracy: 5762/5920 (97%) 	Time / item: 0.4219s
+Accuracy: 6007/6176 (97%) 	Time / item: 0.4221s
+Accuracy: 6263/6432 (97%) 	Time / item: 0.4219s
+Accuracy: 6512/6688 (97%) 	Time / item: 0.4218s
+Accuracy: 6767/6944 (97%) 	Time / item: 0.4217s
+Accuracy: 7023/7200 (98%) 	Time / item: 0.4215s
+Accuracy: 7276/7456 (98%) 	Time / item: 0.4216s
+Accuracy: 7532/7712 (98%) 	Time / item: 0.4217s
+Accuracy: 7786/7968 (98%) 	Time / item: 0.4217s
+Accuracy: 8040/8224 (98%) 	Time / item: 0.4216s
+Accuracy: 8293/8480 (98%) 	Time / item: 0.4218s
+Accuracy: 8549/8736 (98%) 	Time / item: 0.4218s
+Accuracy: 8805/8992 (98%) 	Time / item: 0.4216s
+Accuracy: 9058/9248 (98%) 	Time / item: 0.4217s
+Accuracy: 9312/9504 (98%) 	Time / item: 0.4219s
+Accuracy: 9559/9760 (98%) 	Time / item: 0.4218s
+TEST Accuracy: 9774.0/9984 (97.90%) 	Time /item: 0.4218s 	Time w. argmax /item: 0.4318s [32.000]
+
+Train Epoch: 10 [0/59904 (0%)]	Loss: 0.025320	Time: 41.621s (0.325s/item)	Comm.:96.554MB [128.000]
+Train Epoch: 10 [1280/59904 (2%)]	Loss: 0.049360	Time: 41.418s (0.324s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [2560/59904 (4%)]	Loss: 0.021910	Time: 41.505s (0.324s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [3840/59904 (6%)]	Loss: 0.012680	Time: 42.065s (0.329s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [5120/59904 (9%)]	Loss: 0.039150	Time: 42.116s (0.329s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [6400/59904 (11%)]	Loss: 0.030100	Time: 41.834s (0.327s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [7680/59904 (13%)]	Loss: 0.024390	Time: 43.775s (0.342s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [8960/59904 (15%)]	Loss: 0.026130	Time: 41.442s (0.324s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [10240/59904 (17%)]	Loss: 0.042130	Time: 41.349s (0.323s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [11520/59904 (19%)]	Loss: 0.049640	Time: 41.439s (0.324s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [12800/59904 (21%)]	Loss: 0.029590	Time: 42.991s (0.336s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [14080/59904 (24%)]	Loss: 0.020320	Time: 41.790s (0.326s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [15360/59904 (26%)]	Loss: 0.031590	Time: 41.273s (0.322s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [16640/59904 (28%)]	Loss: 0.026620	Time: 41.876s (0.327s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [17920/59904 (30%)]	Loss: 0.029170	Time: 42.261s (0.330s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [19200/59904 (32%)]	Loss: 0.029740	Time: 41.473s (0.324s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [20480/59904 (34%)]	Loss: 0.020280	Time: 41.512s (0.324s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [21760/59904 (36%)]	Loss: 0.007530	Time: 41.584s (0.325s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [23040/59904 (38%)]	Loss: 0.026080	Time: 41.640s (0.325s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [24320/59904 (41%)]	Loss: 0.016810	Time: 41.667s (0.326s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [25600/59904 (43%)]	Loss: 0.029670	Time: 41.572s (0.325s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [26880/59904 (45%)]	Loss: 0.028310	Time: 41.705s (0.326s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [28160/59904 (47%)]	Loss: 0.020740	Time: 41.498s (0.324s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [29440/59904 (49%)]	Loss: 0.013810	Time: 41.546s (0.325s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [30720/59904 (51%)]	Loss: 0.018320	Time: 41.570s (0.325s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [32000/59904 (53%)]	Loss: 0.020850	Time: 41.718s (0.326s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [33280/59904 (56%)]	Loss: 0.035890	Time: 43.457s (0.340s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [34560/59904 (58%)]	Loss: 0.035860	Time: 41.275s (0.322s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [35840/59904 (60%)]	Loss: 0.020550	Time: 41.788s (0.326s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [37120/59904 (62%)]	Loss: 0.033130	Time: 41.559s (0.325s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [38400/59904 (64%)]	Loss: 0.024820	Time: 41.869s (0.327s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [39680/59904 (66%)]	Loss: 0.030170	Time: 41.682s (0.326s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [40960/59904 (68%)]	Loss: 0.037850	Time: 41.668s (0.326s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [42240/59904 (71%)]	Loss: 0.029790	Time: 41.758s (0.326s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [43520/59904 (73%)]	Loss: 0.047550	Time: 43.307s (0.338s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [44800/59904 (75%)]	Loss: 0.046740	Time: 42.810s (0.334s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [46080/59904 (77%)]	Loss: 0.033200	Time: 42.285s (0.330s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [47360/59904 (79%)]	Loss: 0.041820	Time: 42.314s (0.331s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [48640/59904 (81%)]	Loss: 0.012990	Time: 41.616s (0.325s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [49920/59904 (83%)]	Loss: 0.026930	Time: 41.532s (0.324s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [51200/59904 (85%)]	Loss: 0.047500	Time: 41.851s (0.327s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [52480/59904 (88%)]	Loss: 0.013230	Time: 41.615s (0.325s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [53760/59904 (90%)]	Loss: 0.036080	Time: 41.889s (0.327s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [55040/59904 (92%)]	Loss: 0.013490	Time: 41.954s (0.328s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [56320/59904 (94%)]	Loss: 0.024230	Time: 41.926s (0.328s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [57600/59904 (96%)]	Loss: 0.036150	Time: 41.575s (0.325s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 10 [58880/59904 (98%)]	Loss: 0.006710	Time: 42.102s (0.329s/item)	Comm.:96.555MB [128.000]
+
+Accuracy: 32/32 (100%) 	Time / item: 0.4238s
+Accuracy: 285/288 (99%) 	Time / item: 0.4287s
+Accuracy: 534/544 (98%) 	Time / item: 0.4318s
+Accuracy: 782/800 (98%) 	Time / item: 0.4292s
+Accuracy: 1029/1056 (97%) 	Time / item: 0.4279s
+Accuracy: 1275/1312 (97%) 	Time / item: 0.4273s
+Accuracy: 1522/1568 (97%) 	Time / item: 0.4270s
+Accuracy: 1772/1824 (97%) 	Time / item: 0.4263s
+Accuracy: 2019/2080 (97%) 	Time / item: 0.4260s
+Accuracy: 2265/2336 (97%) 	Time / item: 0.4263s
+Accuracy: 2514/2592 (97%) 	Time / item: 0.4262s
+Accuracy: 2764/2848 (97%) 	Time / item: 0.4262s
+Accuracy: 3012/3104 (97%) 	Time / item: 0.4260s
+Accuracy: 3266/3360 (97%) 	Time / item: 0.4258s
+Accuracy: 3511/3616 (97%) 	Time / item: 0.4258s
+Accuracy: 3762/3872 (97%) 	Time / item: 0.4256s
+Accuracy: 4011/4128 (97%) 	Time / item: 0.4257s
+Accuracy: 4259/4384 (97%) 	Time / item: 0.4254s
+Accuracy: 4511/4640 (97%) 	Time / item: 0.4253s
+Accuracy: 4758/4896 (97%) 	Time / item: 0.4253s
+Accuracy: 5011/5152 (97%) 	Time / item: 0.4250s
+Accuracy: 5266/5408 (97%) 	Time / item: 0.4249s
+Accuracy: 5518/5664 (97%) 	Time / item: 0.4249s
+Accuracy: 5768/5920 (97%) 	Time / item: 0.4252s
+Accuracy: 6014/6176 (97%) 	Time / item: 0.4254s
+Accuracy: 6270/6432 (97%) 	Time / item: 0.4257s
+Accuracy: 6519/6688 (97%) 	Time / item: 0.4258s
+Accuracy: 6774/6944 (98%) 	Time / item: 0.4257s
+Accuracy: 7030/7200 (98%) 	Time / item: 0.4260s
+Accuracy: 7284/7456 (98%) 	Time / item: 0.4263s
+Accuracy: 7540/7712 (98%) 	Time / item: 0.4267s
+Accuracy: 7795/7968 (98%) 	Time / item: 0.4266s
+Accuracy: 8048/8224 (98%) 	Time / item: 0.4266s
+Accuracy: 8301/8480 (98%) 	Time / item: 0.4266s
+Accuracy: 8557/8736 (98%) 	Time / item: 0.4266s
+Accuracy: 8813/8992 (98%) 	Time / item: 0.4266s
+Accuracy: 9066/9248 (98%) 	Time / item: 0.4265s
+Accuracy: 9321/9504 (98%) 	Time / item: 0.4267s
+Accuracy: 9568/9760 (98%) 	Time / item: 0.4266s
+TEST Accuracy: 9784.0/9984 (98.00%) 	Time /item: 0.4266s 	Time w. argmax /item: 0.4365s [32.000]
+
+Train Epoch: 11 [0/59904 (0%)]	Loss: 0.023780	Time: 42.238s (0.330s/item)	Comm.:96.554MB [128.000]
+Train Epoch: 11 [1280/59904 (2%)]	Loss: 0.045120	Time: 41.764s (0.326s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [2560/59904 (4%)]	Loss: 0.021200	Time: 41.783s (0.326s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [3840/59904 (6%)]	Loss: 0.011770	Time: 41.553s (0.325s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [5120/59904 (9%)]	Loss: 0.037370	Time: 43.809s (0.342s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [6400/59904 (11%)]	Loss: 0.028510	Time: 41.934s (0.328s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [7680/59904 (13%)]	Loss: 0.020560	Time: 43.194s (0.337s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [8960/59904 (15%)]	Loss: 0.024790	Time: 42.077s (0.329s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [10240/59904 (17%)]	Loss: 0.039260	Time: 41.995s (0.328s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [11520/59904 (19%)]	Loss: 0.046640	Time: 43.233s (0.338s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [12800/59904 (21%)]	Loss: 0.026920	Time: 43.731s (0.342s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [14080/59904 (24%)]	Loss: 0.017750	Time: 45.319s (0.354s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [15360/59904 (26%)]	Loss: 0.028400	Time: 45.461s (0.355s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [16640/59904 (28%)]	Loss: 0.023940	Time: 46.199s (0.361s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [17920/59904 (30%)]	Loss: 0.026840	Time: 46.222s (0.361s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [19200/59904 (32%)]	Loss: 0.028300	Time: 46.008s (0.359s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [20480/59904 (34%)]	Loss: 0.018450	Time: 45.899s (0.359s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [21760/59904 (36%)]	Loss: 0.006940	Time: 45.939s (0.359s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [23040/59904 (38%)]	Loss: 0.023820	Time: 46.247s (0.361s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [24320/59904 (41%)]	Loss: 0.015430	Time: 46.084s (0.360s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [25600/59904 (43%)]	Loss: 0.027100	Time: 47.665s (0.372s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [26880/59904 (45%)]	Loss: 0.028070	Time: 45.993s (0.359s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [28160/59904 (47%)]	Loss: 0.020300	Time: 46.012s (0.359s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [29440/59904 (49%)]	Loss: 0.011870	Time: 46.566s (0.364s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [30720/59904 (51%)]	Loss: 0.015990	Time: 46.660s (0.365s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [32000/59904 (53%)]	Loss: 0.018760	Time: 46.753s (0.365s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [33280/59904 (56%)]	Loss: 0.033360	Time: 47.121s (0.368s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [34560/59904 (58%)]	Loss: 0.033070	Time: 47.266s (0.369s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [35840/59904 (60%)]	Loss: 0.018320	Time: 47.079s (0.368s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [37120/59904 (62%)]	Loss: 0.020130	Time: 47.825s (0.374s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [38400/59904 (64%)]	Loss: 0.023630	Time: 46.700s (0.365s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [39680/59904 (66%)]	Loss: 0.027000	Time: 46.723s (0.365s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [40960/59904 (68%)]	Loss: 0.036420	Time: 46.432s (0.363s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [42240/59904 (71%)]	Loss: 0.027720	Time: 46.780s (0.365s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [43520/59904 (73%)]	Loss: 0.030850	Time: 47.315s (0.370s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [44800/59904 (75%)]	Loss: 0.031890	Time: 47.066s (0.368s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [46080/59904 (77%)]	Loss: 0.031380	Time: 46.834s (0.366s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [47360/59904 (79%)]	Loss: 0.039580	Time: 47.227s (0.369s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [48640/59904 (81%)]	Loss: 0.012620	Time: 46.998s (0.367s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [49920/59904 (83%)]	Loss: 0.023600	Time: 46.840s (0.366s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [51200/59904 (85%)]	Loss: 0.045370	Time: 47.001s (0.367s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [52480/59904 (88%)]	Loss: 0.012410	Time: 47.037s (0.367s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [53760/59904 (90%)]	Loss: 0.034460	Time: 47.269s (0.369s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [55040/59904 (92%)]	Loss: 0.012850	Time: 46.914s (0.367s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [56320/59904 (94%)]	Loss: 0.022590	Time: 46.841s (0.366s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [57600/59904 (96%)]	Loss: 0.032420	Time: 48.591s (0.380s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 11 [58880/59904 (98%)]	Loss: 0.006170	Time: 46.781s (0.365s/item)	Comm.:96.555MB [128.000]
+
+Accuracy: 32/32 (100%) 	Time / item: 0.5251s
+Accuracy: 284/288 (99%) 	Time / item: 0.4846s
+Accuracy: 534/544 (98%) 	Time / item: 0.4863s
+Accuracy: 782/800 (98%) 	Time / item: 0.4838s
+Accuracy: 1030/1056 (98%) 	Time / item: 0.4829s
+Accuracy: 1276/1312 (97%) 	Time / item: 0.4818s
+Accuracy: 1523/1568 (97%) 	Time / item: 0.4837s
+Accuracy: 1774/1824 (97%) 	Time / item: 0.4843s
+Accuracy: 2021/2080 (97%) 	Time / item: 0.4832s
+Accuracy: 2267/2336 (97%) 	Time / item: 0.4874s
+Accuracy: 2516/2592 (97%) 	Time / item: 0.4874s
+Accuracy: 2766/2848 (97%) 	Time / item: 0.4869s
+Accuracy: 3015/3104 (97%) 	Time / item: 0.4866s
+Accuracy: 3269/3360 (97%) 	Time / item: 0.4864s
+Accuracy: 3515/3616 (97%) 	Time / item: 0.4857s
+Accuracy: 3765/3872 (97%) 	Time / item: 0.4860s
+Accuracy: 4015/4128 (97%) 	Time / item: 0.4855s
+Accuracy: 4263/4384 (97%) 	Time / item: 0.4851s
+Accuracy: 4515/4640 (97%) 	Time / item: 0.4856s
+Accuracy: 4761/4896 (97%) 	Time / item: 0.4854s
+Accuracy: 5015/5152 (97%) 	Time / item: 0.4852s
+Accuracy: 5270/5408 (97%) 	Time / item: 0.4847s
+Accuracy: 5522/5664 (97%) 	Time / item: 0.4849s
+Accuracy: 5772/5920 (98%) 	Time / item: 0.4846s
+Accuracy: 6019/6176 (97%) 	Time / item: 0.4842s
+Accuracy: 6274/6432 (98%) 	Time / item: 0.4843s
+Accuracy: 6523/6688 (98%) 	Time / item: 0.4842s
+Accuracy: 6776/6944 (98%) 	Time / item: 0.4843s
+Accuracy: 7032/7200 (98%) 	Time / item: 0.4841s
+Accuracy: 7288/7456 (98%) 	Time / item: 0.4841s
+Accuracy: 7544/7712 (98%) 	Time / item: 0.4839s
+Accuracy: 7798/7968 (98%) 	Time / item: 0.4838s
+Accuracy: 8052/8224 (98%) 	Time / item: 0.4838s
+Accuracy: 8305/8480 (98%) 	Time / item: 0.4839s
+Accuracy: 8561/8736 (98%) 	Time / item: 0.4839s
+Accuracy: 8817/8992 (98%) 	Time / item: 0.4840s
+Accuracy: 9070/9248 (98%) 	Time / item: 0.4838s
+Accuracy: 9325/9504 (98%) 	Time / item: 0.4842s
+Accuracy: 9572/9760 (98%) 	Time / item: 0.4841s
+TEST Accuracy: 9788.0/9984 (98.04%) 	Time /item: 0.4840s 	Time w. argmax /item: 0.4946s [32.000]
+
+Train Epoch: 12 [0/59904 (0%)]	Loss: 0.022350	Time: 48.540s (0.379s/item)	Comm.:96.554MB [128.000]
+Train Epoch: 12 [1280/59904 (2%)]	Loss: 0.042850	Time: 47.252s (0.369s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [2560/59904 (4%)]	Loss: 0.020020	Time: 46.998s (0.367s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [3840/59904 (6%)]	Loss: 0.010780	Time: 46.661s (0.365s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [5120/59904 (9%)]	Loss: 0.035720	Time: 47.161s (0.368s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [6400/59904 (11%)]	Loss: 0.026690	Time: 48.793s (0.381s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [7680/59904 (13%)]	Loss: 0.019090	Time: 50.148s (0.392s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [8960/59904 (15%)]	Loss: 0.023390	Time: 46.755s (0.365s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [10240/59904 (17%)]	Loss: 0.053550	Time: 48.499s (0.379s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [11520/59904 (19%)]	Loss: 0.042780	Time: 47.219s (0.369s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [12800/59904 (21%)]	Loss: 0.024780	Time: 47.111s (0.368s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [14080/59904 (24%)]	Loss: 0.015460	Time: 48.700s (0.380s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [15360/59904 (26%)]	Loss: 0.025350	Time: 47.378s (0.370s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [16640/59904 (28%)]	Loss: 0.021660	Time: 47.441s (0.371s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [17920/59904 (30%)]	Loss: 0.024990	Time: 49.623s (0.388s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [19200/59904 (32%)]	Loss: 0.026830	Time: 47.077s (0.368s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [20480/59904 (34%)]	Loss: 0.016570	Time: 47.007s (0.367s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [21760/59904 (36%)]	Loss: 0.006540	Time: 48.794s (0.381s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [23040/59904 (38%)]	Loss: 0.020880	Time: 48.097s (0.376s/item)	Comm.:96.555MB [128.000]
+Train Epoch: 12 [24320/59904 (41%)]	Loss: 0.014270	Time: 46.849s (0.366s/item)	Comm.:96.555MB [128.000]
