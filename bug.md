@@ -199,10 +199,191 @@ zipp                 3.11.0
 
 #### 2.1 实验的尝试
 
-
 因此，我们的思路是利用cpu多核多线程来运行程序，主要的尝试如下：
 + 首先，我们查看了服务器配置（该服务器即为1.1 远程连接服务器中所提到的服务器），以及运行`python fcnn-ariann-3.py`时的进程状况
     + 服务器配置：cpu信息：`32  Intel(R) Xeon(R) Silver 4110 CPU @ 2.10GHz`，物理cpu个数：`2`，cpu核心数：`8`，逻辑cpu个数 (物理cpu个数 * cpu核心数 * 超线程数)：`32`
     + `python fcnn-ariann-3.py`进程对应的CPU利用率大概为`100% ~ 1150%`
 + 其次，考虑到我们使用的框架是基于PySyft框架的，而该框架是基于PyTorch的，因此试图利用`torch.set_num_threads(xx)`来控制进程执行情况，但发现该命令没有明显的作用
-+ 最后，我们试图基于[pytorch/examples](https://github.com/pytorch/examples/tree/main/mnist_hogwild)将我们的源代码`fcnn-ariann-3.py`和`procedure.py`转换为对应的多进程版本`fcnn-ariann-3_threading.py`和`procedure_threading.py`，但一直会报错，其主要原因我觉得是我们的代码文件`fcnn-ariann-3.py`和`procedure.py`中使用了加密等操作，因此在多进程版本中`fcnn-ariann-3_threading.py`和`procedure_threading.py`无法正确识别，导致报错。
++ 最后，我们试图基于[pytorch/examples](https://github.com/pytorch/examples/tree/main/mnist_hogwild)将我们的源代码`fcnn-ariann-3.py`和`procedure.py`转换为对应的多进程版本`fcnn-ariann-3_threading.py`和`procedure_threading.py`，但一直会报错，其主要原因我觉得是我们的代码文件`fcnn-ariann-3.py`和`procedure.py`中使用了加密等操作，因此在多进程版本中`fcnn-ariann-3_threading.py`和`procedure_threading.py`无法正确识别，导致报错。具体报错信息如下：
+  + `RuntimeError: The size of tensor a (10) must match the size of tensor b (0) at non-singleton dimension 1`：这是因为`p = mp.Process(target=train, args=(rank, args, private_train_loader, model, epoch))`中无法正确地将参数`private_train_loader`传递到训练函数中，为此，我们将`procedure_threading.py`中的训练函数`train`和`train_epoch`直接放到主函数中
+  + 之后又报错`RuntimeError: matrices expected, got 1D, 2D tensors at /pytorch/aten/src/TH/generic/THTensorMath.cpp:131`，详细信息如下
+
+<details>
+<summary>下面是报错详细信息，请点击展开:mag:</summary>
+```
+(pysyft) root@yangpeng:~/yp_workplace/fssnn# python fcnn-ariann-3_threading.py
+================================================
+(AriaNN) Ciphertext Training over 15 epochs
+model:           Fully Connected Neural Network
+dataset:         MNIST
+batch_size:      128
+================================================
+Process Process-1:
+Traceback (most recent call last):
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 439, in handle_func_command
+    cmd, args_, kwargs_, return_args_type=True
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook_args.py", line 170, in unwrap_args_from_function
+    new_args = args_hook_function(args_)
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook_args.py", line 360, in <lambda>
+    return lambda x: f(lambdas, x)
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook_args.py", line 538, in three_fold
+    lambdas[0](args_[0], **kwargs),
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook_args.py", line 335, in <lambda>
+    else lambda i: forward_func[type(i)](i)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/hook/hook_args.py", line 27, in <lambda>
+    else (_ for _ in ()).throw(PureFrameworkTensorFoundError),
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/hook/hook_args.py", line 27, in <genexpr>
+    else (_ for _ in ()).throw(PureFrameworkTensorFoundError),
+syft.exceptions.PureFrameworkTensorFoundError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/multiprocessing/process.py", line 297, in _bootstrap
+    self.run()
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/multiprocessing/process.py", line 99, in run
+    self._target(*self._args, **self._kwargs)
+  File "/root/yp_workplace/fssnn/fcnn-ariann-3_threading.py", line 104, in train
+    train_epoch(args, model, private_train_loader, optimizer, epoch)
+  File "/root/yp_workplace/fssnn/fcnn-ariann-3_threading.py", line 129, in train_epoch
+    loss[0] = forward(optimizer, model, data, target)   # 前向传播
+  File "/root/yp_workplace/fssnn/fcnn-ariann-3_threading.py", line 119, in forward
+    output = model(data)
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/site-packages/torch/nn/modules/module.py", line 532, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/root/yp_workplace/fssnn/fcnn-ariann-3_threading.py", line 33, in forward
+    x = F.relu(self.fc1(x))          # 此处的relu函数是秘密协议中的relu函数，不能自定义
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/site-packages/torch/nn/modules/module.py", line 532, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/site-packages/torch/nn/modules/linear.py", line 87, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook.py", line 345, in overloaded_func
+    response = handle_func_command(command)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 482, in handle_func_command
+    response = cls._get_response(cmd, args_, kwargs_)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 516, in _get_response
+    response = command_method(*args_, **kwargs_)
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/site-packages/torch/nn/functional.py", line 1370, in linear
+    ret = torch.addmm(bias, input, weight.t())
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook.py", line 345, in overloaded_func
+    response = handle_func_command(command)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 482, in handle_func_command
+    response = cls._get_response(cmd, args_, kwargs_)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 516, in _get_response
+    response = command_method(*args_, **kwargs_)
+RuntimeError: matrices expected, got 1D, 2D tensors at /pytorch/aten/src/TH/generic/THTensorMath.cpp:131
+Process Process-3:
+Traceback (most recent call last):
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 439, in handle_func_command
+    cmd, args_, kwargs_, return_args_type=True
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook_args.py", line 170, in unwrap_args_from_function
+    new_args = args_hook_function(args_)
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook_args.py", line 360, in <lambda>
+    return lambda x: f(lambdas, x)
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook_args.py", line 538, in three_fold
+    lambdas[0](args_[0], **kwargs),
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook_args.py", line 335, in <lambda>
+    else lambda i: forward_func[type(i)](i)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/hook/hook_args.py", line 27, in <lambda>
+    else (_ for _ in ()).throw(PureFrameworkTensorFoundError),
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/hook/hook_args.py", line 27, in <genexpr>
+    else (_ for _ in ()).throw(PureFrameworkTensorFoundError),
+syft.exceptions.PureFrameworkTensorFoundError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/multiprocessing/process.py", line 297, in _bootstrap
+    self.run()
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/multiprocessing/process.py", line 99, in run
+    self._target(*self._args, **self._kwargs)
+  File "/root/yp_workplace/fssnn/fcnn-ariann-3_threading.py", line 104, in train
+    train_epoch(args, model, private_train_loader, optimizer, epoch)
+  File "/root/yp_workplace/fssnn/fcnn-ariann-3_threading.py", line 129, in train_epoch
+    loss[0] = forward(optimizer, model, data, target)   # 前向传播
+  File "/root/yp_workplace/fssnn/fcnn-ariann-3_threading.py", line 119, in forward
+    output = model(data)
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/site-packages/torch/nn/modules/module.py", line 532, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/root/yp_workplace/fssnn/fcnn-ariann-3_threading.py", line 33, in forward
+    x = F.relu(self.fc1(x))          # 此处的relu函数是秘密协议中的relu函数，不能自定义
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/site-packages/torch/nn/modules/module.py", line 532, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/site-packages/torch/nn/modules/linear.py", line 87, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook.py", line 345, in overloaded_func
+    response = handle_func_command(command)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 482, in handle_func_command
+    response = cls._get_response(cmd, args_, kwargs_)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 516, in _get_response
+    response = command_method(*args_, **kwargs_)
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/site-packages/torch/nn/functional.py", line 1370, in linear
+    ret = torch.addmm(bias, input, weight.t())
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook.py", line 345, in overloaded_func
+    response = handle_func_command(command)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 482, in handle_func_command
+    response = cls._get_response(cmd, args_, kwargs_)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 516, in _get_response
+    response = command_method(*args_, **kwargs_)
+RuntimeError: matrices expected, got 1D, 2D tensors at /pytorch/aten/src/TH/generic/THTensorMath.cpp:131
+Process Process-2:
+Traceback (most recent call last):
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 439, in handle_func_command
+    cmd, args_, kwargs_, return_args_type=True
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook_args.py", line 170, in unwrap_args_from_function
+    new_args = args_hook_function(args_)
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook_args.py", line 360, in <lambda>
+    return lambda x: f(lambdas, x)
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook_args.py", line 538, in three_fold
+    lambdas[0](args_[0], **kwargs),
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook_args.py", line 335, in <lambda>
+    else lambda i: forward_func[type(i)](i)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/hook/hook_args.py", line 27, in <lambda>
+    else (_ for _ in ()).throw(PureFrameworkTensorFoundError),
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/hook/hook_args.py", line 27, in <genexpr>
+    else (_ for _ in ()).throw(PureFrameworkTensorFoundError),
+syft.exceptions.PureFrameworkTensorFoundError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/multiprocessing/process.py", line 297, in _bootstrap
+    self.run()
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/multiprocessing/process.py", line 99, in run
+    self._target(*self._args, **self._kwargs)
+  File "/root/yp_workplace/fssnn/fcnn-ariann-3_threading.py", line 104, in train
+    train_epoch(args, model, private_train_loader, optimizer, epoch)
+  File "/root/yp_workplace/fssnn/fcnn-ariann-3_threading.py", line 129, in train_epoch
+    loss[0] = forward(optimizer, model, data, target)   # 前向传播
+  File "/root/yp_workplace/fssnn/fcnn-ariann-3_threading.py", line 119, in forward
+    output = model(data)
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/site-packages/torch/nn/modules/module.py", line 532, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/root/yp_workplace/fssnn/fcnn-ariann-3_threading.py", line 33, in forward
+    x = F.relu(self.fc1(x))          # 此处的relu函数是秘密协议中的relu函数，不能自定义
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/site-packages/torch/nn/modules/module.py", line 532, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/site-packages/torch/nn/modules/linear.py", line 87, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook.py", line 345, in overloaded_func
+    response = handle_func_command(command)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 482, in handle_func_command
+    response = cls._get_response(cmd, args_, kwargs_)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 516, in _get_response
+    response = command_method(*args_, **kwargs_)
+  File "/root/miniconda3/envs/pysyft/lib/python3.7/site-packages/torch/nn/functional.py", line 1370, in linear
+    ret = torch.addmm(bias, input, weight.t())
+  File "/root/yp_workplace/ariann/PySyft/syft/generic/frameworks/hook/hook.py", line 345, in overloaded_func
+    response = handle_func_command(command)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 482, in handle_func_command
+    response = cls._get_response(cmd, args_, kwargs_)
+  File "/root/yp_workplace/ariann/PySyft/syft/frameworks/torch/tensors/interpreters/native.py", line 516, in _get_response
+    response = command_method(*args_, **kwargs_)
+RuntimeError: matrices expected, got 1D, 2D tensors at /pytorch/aten/src/TH/generic/THTensorMath.cpp:131
+```
+</details>
+
+
+
+
+
