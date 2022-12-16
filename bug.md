@@ -192,7 +192,7 @@ zipp                 3.11.0
 
 训练精度是合理的，但是训练时间是不合理的，根据我们的参照论文[AriaNN](https://petsymposium.org/popets/2022/popets-2022-0015.php)中Table的第一行数据可知，每个epoch所需时间应该在0.78h，这和我们的实验相差很大。通过直接运行源码[GitHub-ariann](https://github.com/LaRiffle/ariann)我们得到的结果也是每个epoch所需时间7h左右，因此我们排除了代码本身的问题，转而认为是服务器配置的差距。
 
-![image](https://user-images.githubusercontent.com/66773755/208018343-c51154b9-883d-4765-9049-cdc309e8f250.png)
+![image](https://user-images.githubusercontent.com/66773755/208018770-b1300bb3-f9c0-42fc-adc8-c2c7d29dd2ec.png)
 
 
 注：其中的network-1即为我们设置的全连接神经网络，论文中的所有配置都和我们的设置相同。
