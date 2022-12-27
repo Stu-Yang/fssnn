@@ -59,7 +59,7 @@ def train(args, model, private_train_loader, optimizer, epoch):   # 训练函数
         comm.append(tot_comm)
         del sy.comm_total
 
-        if batch_idx % (args.log_interval*10) == 0:
+        if batch_idx % (args.log_interval*10) == 0:     # 日志信息打印
             print(
                 "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}\tTime: {:.3f}s ({:.3f}s/item)\tComm.:{:.3f}MB [{:.3f}]".format(
                     epoch,
