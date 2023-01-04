@@ -1,18 +1,22 @@
+import torch
 import syft as sy
-from syft.frameworks.torch.mpc.fss import DIF, N
+from syft.frameworks.torch.mpc.fss import le
 import numpy as np
 
-keys_a, keys_b = DIF.keygen(n_values=128*128)
-alpha_a = np.frombuffer(np.ascontiguousarray(keys_a[:, 0:N]), dtype=np.uint32).astype(np.uint64)
-alpha_b = np.frombuffer(np.ascontiguousarray(keys_b[:, 0:N]), dtype=np.uint32).astype(np.uint64)
-
-x = np.array([[1, 1, -1], [1, -1, 1], [-1, 1, 1]])
-print("x : \n", x)
-
-x_masked = (x + alpha_a.reshape(x.shape) + alpha_b.reshape(x.shape)).astype(np.uint64)
+# 创建工作机
+hook = sy.TorchHook(torch)
+bob = sy.VirtualWorker(hook, id="bob")
+alice = sy.VirtualWorker(hook, id="alice")
+crypto_provider = sy.VirtualWorker(hook, id="crypto_provider")
 
 
-y0 = DIF.eval(0, x_masked, keys_a)
-y1 = DIF.eval(1, x_masked, keys_b)
+# 数据
+x1 = 0
+x2 = torch.randint(0, 10, (1, 1))
+print("x1 = ", x1, "\nx2 = ", x2)
 
-print("The result of 'x < 0' is :\n", y0+y1)
+x2_ = x2.share(bob, alice, crypto_provider=crypto_provider)
+print("x2_ = ", x2_)
+
+comp_result = le(x1, x2_)       # result of "0 <= x2_"
+print(comp_result)
