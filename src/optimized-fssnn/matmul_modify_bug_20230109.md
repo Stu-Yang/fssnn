@@ -76,3 +76,20 @@ Traceback (most recent call last):
     kwargs_=kwargs_, n_party=len(workers), n_instances=n_instances, **kwargs
 TypeError: build_separate_fss_keys() got an unexpected keyword argument 'loc'
 ```
+
+# 如何去复现？
+
+进入到服务器，并在终端依次输入：
+```shell
+root@yp:~# conda activate fssnn
+(fssnn) root@yp:~# cd /root/yp_workplace/fssnn/src/optimized-fssnn/ariann-main
+(fssnn) root@yp:~/yp_workplace/fssnn/src/optimized-fssnn/ariann-main# python main.py --model network1 --dataset mnist --train --epochs 15 --lr 0.01
+Training over 15 epochs
+model:           network1
+dataset:         mnist
+batch_size:      128
+Traceback (most recent call last):
+  File "/root/FssNN/PySyft/syft/frameworks/torch/mpc/fss.py", line 110, in fss_op
+  ...
+
+```

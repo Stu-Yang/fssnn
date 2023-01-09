@@ -30,6 +30,7 @@ def profile(func):
 def train(args, model, private_train_loader, optimizer, epoch):
     model.train()
     times = []
+    comm = []       # 记录训练过程的通信量
 
     try:
         n_items = (len(private_train_loader) - 1) * args.batch_size + len(
@@ -40,10 +41,12 @@ def train(args, model, private_train_loader, optimizer, epoch):
 
     for batch_idx, (data, target) in enumerate(private_train_loader):
         start_time = time.time()
+        sy.comm_total = 0       # 初始时通信量设置为0
 
         def forward(optimizer, model, data, target):
             optimizer.zero_grad()
 
+            sy.local_worker.crypto_store.clear_matmul_turple()
             output = model(data)
 
             if args.model in {"network2", "alexnet", "vgg16"}:
@@ -72,13 +75,18 @@ def train(args, model, private_train_loader, optimizer, epoch):
         loss[0].backward()
 
         optimizer.step()
+
         tot_time = time.time() - start_time
+        tot_comm = sy.comm_total / (2 ** 20)
+
         times.append(tot_time)
+        comm.append(tot_comm)
+        del sy.comm_total
 
         if batch_idx % args.log_interval == 0:
             if args.train:
                 print(
-                    "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}\tTime: {:.3f}s ({:.3f}s/item) [{:.3f}]".format(
+                    "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}\tTime: {:.3f}s ({:.3f}s/item)\tComm.:{:.3f}MB [{:.3f}]".format(
                         epoch,
                         batch_idx * args.batch_size,
                         n_items,
@@ -86,12 +94,13 @@ def train(args, model, private_train_loader, optimizer, epoch):
                         loss_dec.item(),
                         tot_time,
                         tot_time / args.batch_size,
+                        tot_comm,
                         args.batch_size,
                     )
                 )
 
     print()
-    return torch.tensor(times).mean().item()
+    return (torch.tensor(times).sum().item(), torch.tensor(comm).sum().item())
 
 
 @profile
@@ -109,6 +118,7 @@ def test(args, model, private_test_loader):
             if args.comm_info:
                 sy.comm_total = 0
 
+            sy.local_worker.crypto_store.clear_matmul_turple()
             output = model(data)
 
             if args.comm_info:

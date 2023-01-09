@@ -71,6 +71,7 @@ def run(args):
         load_state_dict(model, args.model, args.dataset)
 
     model.eval()
+    sy.local_worker.crypto_store.layers=len(list(model.named_modules()))-1
 
     if torch.cuda.is_available():
         sy.cuda_force = True
@@ -81,6 +82,9 @@ def run(args):
             model.get()
 
     if args.train:
+        trianing_times = []
+        trianing_comm = []
+
         for epoch in range(args.epochs):
             optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
 
@@ -88,8 +92,16 @@ def run(args):
                 optimizer = optimizer.fix_precision(
                     precision_fractional=args.precision_fractional, dtype=args.dtype
                 )
-            train_time = train(args, model, private_train_loader, optimizer, epoch)
+            (trianing_times_epoch, trianing_comm_epoch) = train(args, model, private_train_loader, optimizer, epoch)
+            trianing_times.append(trianing_times_epoch)
+            trianing_comm.append(trianing_comm_epoch)
+            
             test_time, accuracy = test(args, model, private_test_loader)
+        print("================================================")
+        print("Online training time: {:.5f}s, and online training comm. is {:.5f}MB"
+            .format(torch.tensor(trianing_times).mean().item(),
+                    torch.tensor(trianing_comm ).mean().item()))
+        print("================================================")
     else:
         test_time, accuracy = test(args, model, private_test_loader)
         if not args.test:
