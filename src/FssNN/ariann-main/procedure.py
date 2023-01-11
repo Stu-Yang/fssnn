@@ -46,6 +46,7 @@ def train(args, model, private_train_loader, optimizer, epoch):
         def forward(optimizer, model, data, target):
             optimizer.zero_grad()
 
+            sy.local_worker.crypto_store.clear_matmul_turple()
             output = model(data)
 
             if args.model in {"network2", "alexnet", "vgg16"}:
@@ -117,6 +118,7 @@ def test(args, model, private_test_loader):
             if args.comm_info:
                 sy.comm_total = 0
 
+            sy.local_worker.crypto_store.clear_matmul_turple()
             output = model(data)
 
             if args.comm_info:

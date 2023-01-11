@@ -71,6 +71,11 @@ def run(args):
         load_state_dict(model, args.model, args.dataset)
 
     model.eval()
+    layers=list(model.named_modules())[1:]
+    linears=0
+    for layer in layers:
+        linears+=isinstance(layer[1],torch.nn.Linear)
+    sy.local_worker.crypto_store.layers=linears
 
     if torch.cuda.is_available():
         sy.cuda_force = True

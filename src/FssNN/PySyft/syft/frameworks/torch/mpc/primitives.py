@@ -1,5 +1,6 @@
 from collections import defaultdict
 from typing import List
+import math
 
 import torch as th
 import syft as sy
@@ -34,6 +35,10 @@ class PrimitiveStorage:
         self.conv2d: dict = defaultdict(list)
         self.conv_transpose2d: dict = defaultdict(list)
 
+        self.matmul_a_b:list=[[]]
+        self.layers:int#layers of module
+        self.loc:int
+        self.loc=0
         self._owner: AbstractWorker = owner
         self._builders: dict = {
             "fss_eq": self.build_fss_keys(op="eq"),
@@ -141,7 +146,10 @@ class PrimitiveStorage:
                 raise EmptyCryptoPrimitiveStoreError(
                     self, available_instances, n_instances=n_instances, op=op, **kwargs
                 )
-
+    def clear_matmul_turple(self):
+        self.loc=0
+        self.matmul_a_b.clear()
+        self.matmul_a_b.append([])
     def provide_primitives(
         self,
         op: str,
@@ -163,7 +171,13 @@ class PrimitiveStorage:
             raise TypeError("op should be a string")
 
         worker_types_primitives = defaultdict(dict)
+        kwargs_n={}
+        if op in{"matmul"}:
+            self.loc=self.loc%(self.layers*3)+1
+            kwargs_n["loc"]=self.loc
+            kwargs_n["layers"]=self.layers
 
+        # kwargs["loc"]=self.loc       #矩阵乘构造相关三元组
         builder = self._builders[op]
 
         primitives = builder(
@@ -172,6 +186,7 @@ class PrimitiveStorage:
 
         for worker_primitives, worker in zip(primitives, workers):
             worker_types_primitives[worker][op] = worker_primitives
+            worker_types_primitives[worker]["kwargs"]=kwargs_n
 
         for i, worker in enumerate(workers):
             worker_message = self._owner.create_worker_command_message(
@@ -186,6 +201,18 @@ class PrimitiveStorage:
         Args:
             types_primitives: dict {op: str: primitives: list}
         """
+        kwargs=types_primitives.get("kwargs")
+        if len(kwargs)>0:
+            loc=int(kwargs.get("loc"))
+            layers=int(kwargs.get("layers"))
+            if loc==1:
+                self.matmul_a_b.clear()
+                self.matmul_a_b.append([])
+            a_b_loc=-1
+            if loc>layers:
+                f_layers=layers - math.ceil((loc - layers) / 2)#layers-1,...1,0
+                a_b_loc=(loc%2)^(layers%2)#0 重用a 1  重用b  #相关矩阵
+        del types_primitives["kwargs"]
         for op, primitives in types_primitives.items():
             if not hasattr(self, op):
                 raise ValueError(f"Unknown crypto primitives {op}")
@@ -193,6 +220,19 @@ class PrimitiveStorage:
             current_primitives = getattr(self, op)
             if op in {"mul", "matmul", "conv2d", "conv_transpose2d"}:
                 for params, primitive_triple in primitives:
+                    if op=="matmul" and a_b_loc==0:
+                        a_store=self.matmul_a_b[f_layers][0].t()
+                        primitive_triple[0]=a_store
+                        if f_layers==0:
+                            self.matmul_a_b.clear()
+                            self.matmul_a_b.append([])
+                    elif op =="matmul" and a_b_loc==1:
+                        b_store=self.matmul_a_b[f_layers][1].t()
+                        primitive_triple[1]=b_store
+                    elif op=="matmul" and a_b_loc<0 :
+                        matmul_a_b=self.matmul_a_b
+                        matmul_a_b[len(matmul_a_b) - 1].extend(primitive_triple[0:2])
+                        matmul_a_b.append([])
                     if th.cuda.is_available():
                         primitive_triple = [p.cuda() for p in primitive_triple]
                     if params not in current_primitives or len(current_primitives[params]) == 0:

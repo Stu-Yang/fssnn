@@ -1,9 +1,9 @@
 import torch as th
 import torch
 from typing import Tuple
+import math
 
 import syft as sy
-
 from .cuda.tensor import CUDALongTensor
 
 if torch.cuda.is_available():
@@ -44,21 +44,42 @@ def build_triple(
     left_shape, right_shape = shape
     cmd = getattr(th, op)
     low_bound, high_bound = -(field // 2), (field - 1) // 2
+    a_b_loc=-1
+    if op == "matmul":
+        matmul_a_b = getattr(sy.local_worker.crypto_store, "matmul_a_b")
+        layers=getattr(sy.local_worker.crypto_store,"layers")
+        loc=getattr(sy.local_worker.crypto_store,"loc")
+        if loc>layers:
+            f_layers=layers - math.ceil((loc - layers) / 2)   #layers-1,...1,0
+            a_b_loc=(loc%2)^(layers%2)#0 重用a 1  重用b  #相关矩阵
 
     if isinstance(torch_dtype, str):
         torch_dtype = dtypes[torch_dtype]
-
     if torch.cuda.is_available():
-        a = th.empty(*left_shape, dtype=torch_dtype, device="cuda").random_(
-            low_bound, high_bound, generator=generator
-        )
-        b = th.empty(*right_shape, dtype=torch_dtype, device="cuda").random_(
-            low_bound, high_bound, generator=generator
-        )
+        if a_b_loc==0:
+            a=matmul_a_b[f_layers][0]
+        else:
+            a = th.empty(*left_shape, dtype=torch_dtype, device="cuda").random_(
+                low_bound, high_bound, generator=generator
+            )
+        if a_b_loc==1:
+            b=matmul_a_b[f_layers][1]
+        else:
+            b = th.empty(*right_shape, dtype=torch_dtype, device="cuda").random_(
+                low_bound, high_bound, generator=generator
+            )
     else:
-        a = th.randint(low_bound, high_bound, left_shape, dtype=torch_dtype)
-        b = th.randint(low_bound, high_bound, right_shape, dtype=torch_dtype)
-
+        if a_b_loc==0:
+            a=matmul_a_b[f_layers][0].t()
+        else:
+            a = th.randint(low_bound, high_bound, left_shape, dtype=torch_dtype)
+        if a_b_loc==1:
+            b=matmul_a_b[f_layers][1].t()
+        else:
+            b = th.randint(low_bound, high_bound, right_shape, dtype=torch_dtype)
+    if a_b_loc<0 and op =="matmul":
+        matmul_a_b[len(matmul_a_b)-1].extend([a,b])
+        matmul_a_b.append([])
     if op == "mul":
         if b.numel() == a.numel():
             # examples:
@@ -93,6 +114,10 @@ def build_triple(
     for i, tensor in enumerate([a, b, c]):
         shares = helper.generate_shares(secret=tensor, n_workers=n_workers, random_type=torch_dtype)
         for w_id in range(n_workers):
-            shares_worker[w_id][i] = shares[w_id]
+            if a_b_loc==i:
+                shares_worker[w_id][i] = 0
+                # shares_worker[w_id][i] = shares[w_id]
+            else:
+                shares_worker[w_id][i] = shares[w_id]
 
     return shares_worker
