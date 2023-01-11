@@ -175,7 +175,7 @@ class PrimitiveStorage:
             self.loc=self.loc%(self.layers*3)+1
             kwargs_n=(self.loc,self.layers)
 
-        # kwargs["loc"]=self.loc#起初构造相关三元组，现在没用了
+        # kwargs["loc"]=self.loc    #起初构造相关三元组，现在没用了
         builder = self._builders[op]
 
         primitives = builder(
