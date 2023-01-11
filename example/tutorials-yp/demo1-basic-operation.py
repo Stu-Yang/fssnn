@@ -9,13 +9,6 @@ import torch
 import syft as sy
 import time
 import numpy as np
-import matplotlib.pyplot as plt
-
-# 创建工作机
-hook = sy.TorchHook(torch)
-bob = sy.VirtualWorker(hook, id="bob")
-alice = sy.VirtualWorker(hook, id="alice")
-crypto_provider = sy.VirtualWorker(hook, id="crypto_provider")
 
 
 # ------------------------------------------------------------------
@@ -42,33 +35,44 @@ crypto_provider = sy.VirtualWorker(hook, id="crypto_provider")
 # Goal 2&3: seucre matrix addition and multiplication
 # Compute C = A X B
 
-comm = []
-matrix_dim = []
+if __name__ == "__main__":
+    # 创建工作机
+    hook = sy.TorchHook(torch)
+    bob = sy.VirtualWorker(hook, id="bob")
+    alice = sy.VirtualWorker(hook, id="alice")
+    crypto_provider = sy.VirtualWorker(hook, id="crypto_provider")
+    #sy.local_worker.crypto_store.layers = 10
+    comm = []
+    matrix_dim = []
 
-for n in range(1, 7):
-    row, col = 16 * (2 ** n), 16 * (2 ** n)
-    matrix_dim.append(row)
+    for n in range(1, 7):
+        #sy.local_worker.crypto_store.clear_matmul_turple()
+        row, col = 16 * (2 ** n), 16 * (2 ** n)
+        matrix_dim.append(row)
 
-    A = torch.randint(0, 2**16-1, (row, col))
-    B = torch.randint(0, 2**16-1, (row, col))
+        A = torch.randint(0, 2 ** 16 - 1, (row, col))
+        B = torch.randint(0, 2 ** 16 - 1, (row, col))
+        C = torch.randint(0, 2 ** 16 - 1, (row, col))
+        D = torch.randint(0, 2 ** 16 - 1, (row, col))
 
-    A_ = A.share(bob,alice, crypto_provider=crypto_provider)
-    B_ = B.share(bob,alice, crypto_provider=crypto_provider)
+        A_ = A.share(bob, alice, crypto_provider=crypto_provider, protocol="fss")
+        B_ = B.share(bob, alice, crypto_provider=crypto_provider, protocol="fss")
+        C_ = B.share(bob, alice, crypto_provider=crypto_provider, protocol="fss")
+        D_ = B.share(bob, alice, crypto_provider=crypto_provider, protocol="fss")
 
-    # seucre multiplication
-    sy.comm_total = 0           # commuication
-    time_start = time.time()    # time
+        # seucre multiplication
+        sy.comm_total = 0  # commuication
+        time_start = time.time()  # time
+        E_ = D_.matmul(C_.matmul(B_.matmul(A_)))
+        E = E_.get()
 
-    C = A_.mm(B_)               # mm() is secure matrix multiplication, is quivalent to matmul()
-                                # and is defined in ~/gsq_workplace/arinn/PySyft/syft/frameworks/torch/tensors/interpreters/additive_shared.py line 679
-    C.get()
+        comm_total = sy.comm_total
+        comm.append(comm_total)
 
-    comm_total = sy.comm_total
-    comm.append(comm_total)
-
-    print("matrix dimension = {} : Total communication is {:.5f} MB, and total time is {:.5f} s in secure multiplication."
-            .format(row, ((comm_total) / 2**20), (time.time() - time_start)))           # 10 ** 6 in yp_workplace/ariann/ariann/preprocess.py line 237 instead of 2 ** 20
-    del sy.comm_total
+        print(
+            "matrix dimension = {} : Total communication is {:.5f} MB, and total time is {:.5f} s in secure multiplication.".format(
+                row, ((comm_total) / 2 ** 20), (time.time() - time_start)))
+        del sy.comm_total
 
 # 输出显示矩阵维度增加一倍（*2），通信量增加两倍（*4），即通信量和矩阵维度的平方成正比，这和理论结果是相符的。但是，计算时间是有些异常的，可能和计算机内部的矩阵乘法优化有关
 # Output:
