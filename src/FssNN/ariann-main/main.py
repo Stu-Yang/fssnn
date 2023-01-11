@@ -71,11 +71,6 @@ def run(args):
         load_state_dict(model, args.model, args.dataset)
 
     model.eval()
-    layers=list(model.named_modules())[1:]              # modify matmul
-    linears=0
-    for layer in layers:
-        linears+=isinstance(layer[1],torch.nn.Linear)
-    sy.local_worker.crypto_store.layers=linears
 
     if torch.cuda.is_available():
         sy.cuda_force = True
@@ -88,7 +83,7 @@ def run(args):
     if args.train:
         trianing_times = []
         trianing_comm = []
-
+        
         for epoch in range(args.epochs):
             optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
 
@@ -106,6 +101,7 @@ def run(args):
             .format(torch.tensor(trianing_times).mean().item(),
                     torch.tensor(trianing_comm ).mean().item()))
         print("================================================")
+
     else:
         test_time, accuracy = test(args, model, private_test_loader)
         if not args.test:
