@@ -10,7 +10,7 @@ if __name__ == "__main__":
     bob = sy.VirtualWorker(hook, id="bob")
     alice = sy.VirtualWorker(hook, id="alice")
     crypto_provider = sy.VirtualWorker(hook, id="crypto_provider")
-    sy.local_worker.crypto_store.layers = 10    # 表示linear的层数。大于等于9为不相关;测试优化则设置为3
+    sy.local_worker.crypto_store.layers = 3    # 表示linear的层数。大于等于9为不相关;测试优化则设置为3
     batch_sizes=[64,128]    # 可设置多种 batch_size
     col_row_s=[784,128,128];row_s=[128,128,10]
     for batch_size in batch_sizes:
@@ -18,7 +18,7 @@ if __name__ == "__main__":
         sy.comm_matmul = 0  # me向alice、bob分发beaver时产生的通信量
         sy.local_worker.crypto_store.clear_matmul_turple()
         comm = []
-        X_s=[];W_s=[];
+        X_s=[];W_s=[]
         δ_s=[]
         matrix_dim = []
         matmul_a_b=[]

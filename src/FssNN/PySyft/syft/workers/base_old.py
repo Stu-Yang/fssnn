@@ -444,9 +444,7 @@ class BaseWorker(AbstractWorker):
 
         # Step 0: deserialize message
         msg = sy.serde.deserialize(bin_message, worker=self, strategy=strat)
-        if self.id == "alice" and hasattr(sy,"comm_matmul"):
-            if list(msg.message[0][0].keys())[0]=="matmul":
-                    sy.comm_matmul += len(bin_message)
+
         # Step 1: save message and/or log it out
         if self.log_msgs:
             self.msg_history.append(msg)

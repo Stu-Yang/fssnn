@@ -171,13 +171,11 @@ class PrimitiveStorage:
             raise TypeError("op should be a string")
 
         worker_types_primitives = defaultdict(dict)
-        kwargs_n={}
         if op in{"matmul"}:
             self.loc=self.loc%(self.layers*3)+1
-            kwargs_n["loc"]=self.loc
-            kwargs_n["layers"]=self.layers
+            kwargs_n=(self.loc,self.layers)
 
-        # kwargs["loc"]=self.loc       #矩阵乘构造相关三元组
+        # kwargs["loc"]=self.loc#起初构造相关三元组，现在没用了
         builder = self._builders[op]
 
         primitives = builder(
@@ -186,7 +184,8 @@ class PrimitiveStorage:
 
         for worker_primitives, worker in zip(primitives, workers):
             worker_types_primitives[worker][op] = worker_primitives
-            worker_types_primitives[worker]["kwargs"]=kwargs_n
+            if op =="matmul":
+                worker_types_primitives[worker]["kwargs"]=kwargs_n
 
         for i, worker in enumerate(workers):
             worker_message = self._owner.create_worker_command_message(
@@ -202,17 +201,18 @@ class PrimitiveStorage:
             types_primitives: dict {op: str: primitives: list}
         """
         kwargs=types_primitives.get("kwargs")
-        if len(kwargs)>0:
-            loc=int(kwargs.get("loc"))
-            layers=int(kwargs.get("layers"))
+        a_b_loc=-1
+        if kwargs is not None:
+            loc=int(kwargs[0])
+            layers=int(kwargs[1])
             if loc==1:
                 self.matmul_a_b.clear()
                 self.matmul_a_b.append([])
-            a_b_loc=-1
-            if loc>layers:
+            if loc>layers:# printf
+                # print("重用")
                 f_layers=layers - math.ceil((loc - layers) / 2)#layers-1,...1,0
                 a_b_loc=(loc%2)^(layers%2)#0 重用a 1  重用b  #相关矩阵
-        del types_primitives["kwargs"]
+            del types_primitives["kwargs"]
         for op, primitives in types_primitives.items():
             if not hasattr(self, op):
                 raise ValueError(f"Unknown crypto primitives {op}")
